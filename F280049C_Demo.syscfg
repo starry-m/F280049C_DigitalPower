@@ -1,0 +1,155 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/boards/LAUNCHXL_F280049C" --context "system" --product "C2000WARE@5.01.00.00"
+ * @versions {"tool":"1.19.0+3426"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const adc            = scripting.addModule("/driverlib/adc.js", {}, false);
+const adc1           = adc.addInstance();
+const adc2           = adc.addInstance();
+const asysctl        = scripting.addModule("/driverlib/asysctl.js");
+const led            = scripting.addModule("/driverlib/board_components/led", {}, false);
+const led1           = led.addInstance();
+const device_support = scripting.addModule("/driverlib/device_support.js");
+const epwm           = scripting.addModule("/driverlib/epwm.js", {}, false);
+const epwm1          = epwm.addInstance();
+const gpio           = scripting.addModule("/driverlib/gpio.js", {}, false);
+const gpio2          = gpio.addInstance();
+const sci            = scripting.addModule("/driverlib/sci.js", {}, false);
+const sci1           = sci.addInstance();
+const sysctl         = scripting.addModule("/driverlib/sysctl.js");
+const CMD            = scripting.addModule("/utilities/cmd_tool/cmd_syscfg/source/CMD");
+const CMD1           = CMD.addInstance();
+const CMD2           = CMD.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+adc1.$name             = "myADC0";
+adc1.adcClockPrescaler = "ADC_CLK_DIV_2_0";
+adc1.soc0SampleWindow  = 8;
+adc1.enabledSOCs       = ["ADC_SOC_NUMBER0","ADC_SOC_NUMBER1","ADC_SOC_NUMBER2"];
+adc1.soc1SampleWindow  = 8;
+adc1.soc2SampleWindow  = 8;
+adc1.soc1Channel       = "ADC_CH_ADCIN2";
+adc1.soc2Channel       = "ADC_CH_ADCIN6";
+adc1.useInterrupts     = false;
+adc1.soc0Trigger       = "ADC_TRIGGER_EPWM1_SOCA";
+adc1.soc1Trigger       = "ADC_TRIGGER_EPWM1_SOCA";
+adc1.soc2Trigger       = "ADC_TRIGGER_EPWM1_SOCA";
+
+adc2.$name             = "myADC1";
+adc2.adcBase           = "ADCC_BASE";
+adc2.adcClockPrescaler = "ADC_CLK_DIV_2_0";
+adc2.enabledSOCs       = ["ADC_SOC_NUMBER1","ADC_SOC_NUMBER3"];
+adc2.soc1SampleWindow  = 8;
+adc2.soc3SampleWindow  = 8;
+adc2.soc1Channel       = "ADC_CH_ADCIN1";
+adc2.soc3Channel       = "ADC_CH_ADCIN3";
+adc2.useInterrupts     = false;
+
+led1.$name          = "myBoardLED0";
+led1.gpio.$hardware = system.deviceData.board.components.LED5;
+
+epwm1.$name                                                      = "myEPWM0";
+epwm1.$hardware                                                  = system.deviceData.board.components.BP_SITE_2.subComponents.PWM_LOC1;
+epwm1.useCase                                                    = "CUSTOM";
+epwm1.useInterfacePins                                           = ["EPWM#_A","EPWM#_B"];
+epwm1.epwmTimebase_hsClockDiv                                    = "EPWM_HSCLOCK_DIVIDER_1";
+epwm1.hrpwm_syncSource                                           = "HRPWM_PWMSYNC_SOURCE_ZERO";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_gld                   = true;
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_shadowMode            = true;
+epwm1.epwmCounterCompare_cmpA                                    = 69;
+epwm1.epwmCounterCompare_cmpAGld                                 = true;
+epwm1.epwmCounterCompare_cmpALink                                = "EPWM_LINK_WITH_EPWM_1";
+epwm1.epwmCounterCompare_cmpB                                    = 69;
+epwm1.epwmCounterCompare_cmpBGld                                 = true;
+epwm1.epwmCounterCompare_cmpBLink                                = "EPWM_LINK_WITH_EPWM_1";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_gld                   = true;
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_shadowMode            = true;
+epwm1.epwmTimebase_period                                        = 250;
+epwm1.epwmTimebase_counterMode                                   = "EPWM_COUNTER_MODE_UP_DOWN";
+epwm1.epwmDeadband_polarityFED                                   = "EPWM_DB_POLARITY_ACTIVE_LOW";
+epwm1.epwmDeadband_enableRED                                     = true;
+epwm1.epwmDeadband_enableFED                                     = true;
+epwm1.epwmDeadband_delayRED                                      = 10;
+epwm1.epwmDeadband_delayFED                                      = 10;
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA   = "EPWM_AQ_OUTPUT_LOW";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_DOWN_CMPA = "EPWM_AQ_OUTPUT_HIGH";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_UP_CMPA   = "EPWM_AQ_OUTPUT_HIGH";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_DOWN_CMPA = "EPWM_AQ_OUTPUT_LOW";
+epwm1.epwmEventTrigger_enableInterrupt                           = true;
+epwm1.epwmEventTrigger_registerInterrupts                        = true;
+epwm1.epwmEventTrigger_interruptSource                           = "EPWM_INT_TBCTR_PERIOD";
+epwm1.epwmEventTrigger_interruptEventCount                       = "1";
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEnable                  = true;
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEventPrescalar          = "3";
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEventCountInitEnable    = true;
+epwm1.epwmEventTrigger_EPWM_SOC_A_triggerSource                  = "EPWM_SOC_TBCTR_U_CMPA";
+
+gpio2.direction                     = "GPIO_DIR_MODE_OUT";
+gpio2.$name                         = "myGPIOOutput0";
+gpio2.$hardware                     = system.deviceData.board.components.LED4;
+gpio2.gpioPin.$assignAllowConflicts = "boosterpack1.12";
+
+sci1.$name                    = "mySCI0";
+sci1.$hardware                = system.deviceData.board.components.XDS_UART.subComponents.XDS_SCI_INST1;
+sci1.registerInterrupts       = true;
+sci1.rxFifo                   = "SCI_FIFO_RX2";
+sci1.sciRXInt.enableInterrupt = true;
+sci1.sciTXInt.enableInterrupt = true;
+
+CMD1.$name                    = "generic_ram_lnk";
+CMD1.sectionMemory_text       = ["RAMGS0","RAMLS4","RAMLS5","RAMLS6","RAMLS7"];
+CMD1.sectionMemory_ramfunc    = ["RAMM0"];
+CMD1.sectionMemory_cinit      = ["RAMM0"];
+CMD1.sectionMemory_stack      = ["RAMM1"];
+CMD1.sectionMemory_init_array = ["RAMM0"];
+CMD1.sectionMemory_bss        = ["RAMLS4"];
+CMD1.sectionMemory_const      = ["RAMLS4"];
+CMD1.sectionMemory_data       = ["RAMLS4"];
+CMD1.sectionMemory_switch     = ["RAMM0"];
+CMD1.sectionMemory_sysmem     = ["RAMLS4"];
+CMD1.sectionRun_ramfunc       = ["RAMLS4"];
+
+CMD2.$name                               = "generic_flash_lnk";
+CMD2.sectionAlignEnable_ramfunc          = true;
+CMD2.sectionAlignEnable_text             = true;
+CMD2.sectionAlignEnable_binit            = true;
+CMD2.sectionAlignEnable_cinit            = true;
+CMD2.sectionAlignEnable_switch           = true;
+CMD2.sectionAlignEnable_init_array       = true;
+CMD2.sectionAlignEnable_const            = true;
+CMD2.sectionAlignEnable_ovly             = true;
+CMD2.sectionMemory_codestart             = "0x080000";
+CMD2.sectionMemory_stack                 = ["RAMM1"];
+CMD2.sectionMemory_ramfunc               = ["FLASH_BANK0_SEC1"];
+CMD2.sectionMemory_text                  = ["FLASH_BANK0_SEC2","FLASH_BANK0_SEC3","FLASH_BANK0_SEC4"];
+CMD2.sectionMemory_binit                 = ["FLASH_BANK0_SEC1"];
+CMD2.sectionMemory_cinit                 = ["FLASH_BANK0_SEC1"];
+CMD2.sectionMemory_switch                = ["FLASH_BANK0_SEC1"];
+CMD2.sectionMemory_bss                   = ["RAMLS5"];
+CMD2.sectionMemory_data                  = ["RAMLS5"];
+CMD2.sectionMemory_sysmem                = ["RAMLS5"];
+CMD2.sectionRunFromDifferentAddr_ramfunc = true;
+CMD2.sectionBinit_ramfunc                = false;
+CMD2.sectionMemory_init_array            = ["FLASH_BANK0_SEC1"];
+CMD2.sectionMemory_const                 = ["FLASH_BANK0_SEC4"];
+CMD2.sectionMemory_ovly                  = ["FLASH_BANK0_SEC1"];
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+led1.gpio.gpioPin.$suggestSolution    = "boosterpack2.52";
+epwm1.epwm.$suggestSolution           = "EPWM1";
+epwm1.epwm.epwm_aPin.$suggestSolution = "boosterpack2.80";
+epwm1.epwm.epwm_bPin.$suggestSolution = "boosterpack2.79";
+sci1.sci.$suggestSolution             = "SCIA";
+sci1.sci.sci_rxPin.$suggestSolution   = "boosterpack2.43";
+sci1.sci.sci_txPin.$suggestSolution   = "boosterpack2.44";

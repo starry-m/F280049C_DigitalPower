@@ -1,0 +1,11 @@
+"./syscfg/board.obj"
+"./syscfg/device.obj"
+"./syscfg/device_cmd.obj"
+"./syscfg/c2000ware_libraries.obj"
+"./f28004x_codestartbranch.obj"
+"./main.obj"
+-l"syscfg/device_cmd.cmd"
+-lc2000ware_libraries.cmd.genlibs
+-lboard.cmd.genlibs
+-ldevice_cmd.cmd.genlibs
+-llibc.a
