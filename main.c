@@ -57,7 +57,7 @@
 #include "device.h"
 #include "board.h"
 
-#include "stdint.h"
+#include "stdio.h"
 //
 // Globals
 //
@@ -78,6 +78,80 @@ uint16_t myADC0Results[RESULTS_BUFFER_SIZE];   // Buffer for results
 uint16_t index;                              // Index into result buffer
 volatile uint16_t bufferFull;                // Flag to indicate buffer is full
 
+void ADC0_Init()
+{
+    //
+        // ADC Initialization: Write ADC configurations and power up the ADC
+        //
+        // Configures the ADC module's offset trim
+        //
+        ADC_setOffsetTrimAll(ADC_REFERENCE_INTERNAL,ADC_REFERENCE_3_3V);
+        //
+        // Configures the analog-to-digital converter module prescaler.
+        //
+        ADC_setPrescaler(myADC0_BASE, ADC_CLK_DIV_2_0);
+        //
+        // Sets the timing of the end-of-conversion pulse
+        //
+        ADC_setInterruptPulseMode(myADC0_BASE, ADC_PULSE_END_OF_CONV);
+        //
+        // Powers up the analog-to-digital converter core.
+        //
+        ADC_enableConverter(myADC0_BASE);
+        //
+        // Delay for 1ms to allow ADC time to power up
+        //
+        DEVICE_DELAY_US(5000);
+        //
+        // SOC Configuration: Setup ADC EPWM channel and trigger settings
+        //
+        // Disables SOC burst mode.
+        //
+        ADC_disableBurstMode(myADC0_BASE);
+        //
+        // Sets the priority mode of the SOCs.
+        //
+        ADC_setSOCPriority(myADC0_BASE, ADC_PRI_ALL_ROUND_ROBIN);
+        //
+        // Start of Conversion 0 Configuration
+        //
+        //
+        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+        //      SOC number      : 0
+        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
+        //      Channel         : ADC_CH_ADCIN0
+        //      Sample Window   : 8 SYSCLK cycles
+        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+        //
+        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0, 8U);
+        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
+        //
+        // Start of Conversion 1 Configuration
+        //
+        //
+        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+        //      SOC number      : 1
+        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
+        //      Channel         : ADC_CH_ADCIN2
+        //      Sample Window   : 8 SYSCLK cycles
+        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+        //
+        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2, 8U);
+        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER1, ADC_INT_SOC_TRIGGER_NONE);
+        //
+        // Start of Conversion 2 Configuration
+        //
+        //
+        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+        //      SOC number      : 2
+        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
+        //      Channel         : ADC_CH_ADCIN6
+        //      Sample Window   : 8 SYSCLK cycles
+        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+        //
+        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6, 8U);
+        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER2, ADC_INT_SOC_TRIGGER_NONE);
+}
 //
 // Main
 //
@@ -114,6 +188,8 @@ void main(void)
         Board_init();
 
 
+//        ADC_setOffsetTrimAll(ADC_REFERENCE_INTERNAL,ADC_REFERENCE_3_3V);
+//        ADC0_Init();
 //        EPWM_configureSignal(myEPWM0_BASE, &pwmSignal);
 
         //
@@ -126,7 +202,6 @@ void main(void)
         //
         Interrupt_enable(INT_EPWM1);
 
-        ADC_setOffsetTrimAll(ADC_REFERENCE_INTERNAL,ADC_REFERENCE_3_3V);
         //
         // Initialize results buffer
         //
@@ -171,7 +246,7 @@ void main(void)
     uint16_t ai;
     for(ai=0;ai<9;ai++)
     {
-        printf(send_ad_buff,"adc %d: = %d\n",ai,myADC0Results[ai]);
+//        printf(send_ad_buff,"adc %d: = %d\n",ai,myADC0Results[ai]);
 //        SCI_writeCharArray(SCIA_BASE, (uint16_t*)send_ad_buff, 12);
     }
     for(;;)
@@ -185,8 +260,20 @@ void main(void)
         else
             compAValue=0;
 
-
-
+        myADC0Results[0] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
+        myADC0Results[1] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
+        myADC0Results[2] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
+//        printf("myADC0Results[0]=%d\n",myADC0Results[0]);
+//        printf("myADC0Results[1]=%d\n",myADC0Results[1]);
+//        printf("myADC0Results[2]=%d\n",myADC0Results[2]);
+//        if(index<70)
+//        {
+//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
+//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
+//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
+//        }
+//        else
+//            index=0;
     }
 }
 //
@@ -201,14 +288,7 @@ __interrupt void INT_myEPWM0_ISR(void)
         GPIO_togglePin(23);
         isr_counter=0;
     }
-    if(index<7)
-    {
-        myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
-        myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
-        myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
-    }
-    else
-        index=0;
+
 //    EPWM_setCounterCompareValue(myEPWM0_BASE,EPWM_COUNTER_COMPARE_A,isr_counter%250);
     //
     // Clear INT flag for this timer
@@ -274,6 +354,40 @@ __interrupt void INT_mySCI0_RX_ISR(void)
 
     counter++;
 }
+
+//int fputc(int _c, register FILE *_fp)
+//{
+//        while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
+//                HWREGH(mySCI0_BASE + SCI_O_TXBUF) = _c;
+//        return _c;
+//}
+//
+//int putc(int _c, register FILE *_fp)
+//{
+//    while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
+//            HWREGH(mySCI0_BASE + SCI_O_TXBUF) = _c;
+//    return _c;
+//}
+//
+//int putchar(int data)
+//{
+//  while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
+//  HWREGH(mySCI0_BASE + SCI_O_TXBUF) =data;
+//  return data;
+//}
+//
+//int fputs(const char *_ptr, register FILE *_fp)
+//{
+//    unsigned int i, len;
+//    len = strlen(_ptr);
+//    for(i=0 ; i<len ; i++)
+//    {
+//        while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
+//        HWREGH(mySCI0_BASE + SCI_O_TXBUF) = (uint8_t) _ptr[i];
+//    }
+//    return len;
+//}
+
 //
 // End of File
 //

@@ -13,4 +13,6 @@
 	<templateProperties value="id=gpio_ex2_toggle.projectspec.gpio_ex2_toggle"/>
 	<origin value="D:\workTools\ti\c2000\C2000Ware_5_01_00_00\driverlib\f28004x\examples\gpio\CCS\gpio_ex2_toggle.projectspec"/>
 	<filesToOpen value=""/>
+	<connection value="common/targetdb/connections/TIXDS110_Connection.xml"/>
+	<isTargetManual value="true"/>
 </projectOptions>

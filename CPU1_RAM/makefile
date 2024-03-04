@@ -134,11 +134,11 @@ EXE_OUTPUTS__QUOTED += \
 
 
 # All Target
-all: $(OBJS) $(GEN_CMDS)
+all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@$(MAKE) --no-print-directory -Onone "F280049C_Demo.out"
 
 # Tool invocations
-F280049C_Demo.out: $(OBJS) $(GEN_CMDS)
+F280049C_Demo.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
 	"D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu0 -Ooff --define=DEBUG --define=generic_ram_lnk --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"F280049C_Demo.map" --heap_size=0x200 --stack_size=0x3F8 --warn_sections -i"D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/lib" -i"D:/workTools/ti/c2000/C2000Ware_5_01_00_00" -i"D:/1my_program_study/2024_winter_task/280049C/workSpace/F280049C_Demo/CPU1_RAM/syscfg" -i"D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include" --reread_libs --define=generic_ram_lnk --diag_wrap=off --display_error_number --xml_link_info="F280049C_Demo_linkInfo.xml" --entry_point=code_start --rom_model -o "F280049C_Demo.out" $(ORDERED_OBJS)

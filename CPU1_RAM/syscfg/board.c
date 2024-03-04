@@ -124,11 +124,7 @@ void myADC0_init(){
 	//
 	// Sets the timing of the end-of-conversion pulse
 	//
-	ADC_setInterruptPulseMode(myADC0_BASE, ADC_PULSE_END_OF_ACQ_WIN);
-	//
-	// Sets the timing of early interrupt generation.
-	//
-	ADC_setInterruptCycleOffset(myADC0_BASE, 0U);
+	ADC_setInterruptPulseMode(myADC0_BASE, ADC_PULSE_END_OF_CONV);
 	//
 	// Powers up the analog-to-digital converter core.
 	//
@@ -201,11 +197,7 @@ void myADC1_init(){
 	//
 	// Sets the timing of the end-of-conversion pulse
 	//
-	ADC_setInterruptPulseMode(myADC1_BASE, ADC_PULSE_END_OF_ACQ_WIN);
-	//
-	// Sets the timing of early interrupt generation.
-	//
-	ADC_setInterruptCycleOffset(myADC1_BASE, 0U);
+	ADC_setInterruptPulseMode(myADC1_BASE, ADC_PULSE_END_OF_CONV);
 	//
 	// Powers up the analog-to-digital converter core.
 	//
@@ -320,7 +312,7 @@ void EPWM_init(){
     EPWM_setInterruptEventCount(myEPWM0_BASE, 1);	
     EPWM_enableADCTrigger(myEPWM0_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(myEPWM0_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_U_CMPA);	
-    EPWM_setADCTriggerEventPrescale(myEPWM0_BASE, EPWM_SOC_A, 3);	
+    EPWM_setADCTriggerEventPrescale(myEPWM0_BASE, EPWM_SOC_A, 1);	
     EPWM_enableADCTriggerEventCountInit(myEPWM0_BASE, EPWM_SOC_A);	
 }
 

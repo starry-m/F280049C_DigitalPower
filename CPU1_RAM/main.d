@@ -98,6 +98,8 @@ main.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/driverlib/f28004x/driverlib
 main.obj: syscfg/device.h
 main.obj: syscfg/clocktree.h
 main.obj: syscfg/board.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdio.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdarg.h
 
 ../main.c:
 
@@ -294,4 +296,8 @@ syscfg/device.h:
 syscfg/clocktree.h:
 
 syscfg/board.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdio.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdarg.h:
 
