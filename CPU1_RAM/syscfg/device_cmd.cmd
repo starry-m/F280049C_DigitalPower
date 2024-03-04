@@ -9,8 +9,7 @@ MEMORY
     CLATOCPU_MSGRAM           : origin = 0x001480, length = 0x000080
     CPUTOCLA_MSGRAM           : origin = 0x001500, length = 0x000080
     RAMLS0                    : origin = 0x008000, length = 0x000800
-    RAMLS1                    : origin = 0x008800, length = 0x000800
-    RAMLS2                    : origin = 0x009000, length = 0x000800
+    RAMLS_1_AND_2             : origin = 0x008800, length = 0x001000
     RAMLS3                    : origin = 0x009800, length = 0x000800
     RAMLS4                    : origin = 0x00A000, length = 0x000800
     RAMLS5                    : origin = 0x00A800, length = 0x000800
@@ -68,11 +67,11 @@ SECTIONS
     .cinit               : >  RAMM0
     .stack               : >  RAMM1
     .init_array          : >  RAMM0
-    .bss                 : >  RAMLS4
+    .bss                 : >> RAMLS4 | RAMLS_1_AND_2
     .const               : >  RAMLS4
-    .data                : >  RAMLS4
+    .data                : >> RAMLS4 | RAMLS_1_AND_2
     .switch              : >  RAMM0
-    .sysmem              : >  RAMLS4
+    .sysmem              : >> RAMLS4 | RAMLS_1_AND_2
 
 }
 

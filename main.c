@@ -263,9 +263,9 @@ void main(void)
         myADC0Results[0] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
         myADC0Results[1] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
         myADC0Results[2] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
-//        printf("myADC0Results[0]=%d\n",myADC0Results[0]);
-//        printf("myADC0Results[1]=%d\n",myADC0Results[1]);
-//        printf("myADC0Results[2]=%d\n",myADC0Results[2]);
+        printf("myADC0Results[0]=%d\n",myADC0Results[0]);
+        printf("myADC0Results[1]=%d\n",myADC0Results[1]);
+        printf("myADC0Results[2]=%d\n",myADC0Results[2]);
 //        if(index<70)
 //        {
 //            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
