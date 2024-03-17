@@ -36,5 +36,36 @@
 
 void C2000Ware_libraries_init()
 {
+    CONTROLLER_init();
+}
+
+
+//
+// DCL CONTROLLER
+//
+//
+// myCONTROLLER0 variables
+//
+DCL_PI myCONTROLLER0 = PI_DEFAULTS;
+DCL_PI_SPS myCONTROLLER0_sps = PI_SPS_DEFAULTS;
+DCL_CSS myCONTROLLER0_css = DCL_CSS_DEFAULTS;
+void myCONTROLLER0_init(){
+    //
+    // myCONTROLLER0 settings
+    //
+    myCONTROLLER0.sps = &myCONTROLLER0_sps;
+    myCONTROLLER0.css = &myCONTROLLER0_css;
+    myCONTROLLER0.Kp = 11.5f;
+    myCONTROLLER0.Ki = 0.01f;
+    myCONTROLLER0.i10 = 1.0f;
+    myCONTROLLER0.Umax = 200.0f;
+    myCONTROLLER0.Umin = 50.0f;
+    myCONTROLLER0.i6 = 1.0f;
+    myCONTROLLER0.i11 = 1.0f;
+    myCONTROLLER0.Imax = 1.0f;
+    myCONTROLLER0.Imin = -1.0f;
+}
+void CONTROLLER_init(){
+    myCONTROLLER0_init();
 }
 

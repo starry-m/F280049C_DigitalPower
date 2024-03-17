@@ -1,8 +1,8 @@
-//#############################################################################
+// #############################################################################
 //
-// FILE:    gpio_ex2_toggle.c
+//  FILE:    gpio_ex2_toggle.c
 //
-// TITLE:   Device GPIO Toggle
+//  TITLE:   Device GPIO Toggle
 //
 //! \addtogroup driver_example_list
 //! <h1> Device GPIO Toggle </h1>
@@ -14,7 +14,7 @@
 //! corresponding device to migrate, saving the project will
 //! auto-migrate your project settings.
 //
-//#############################################################################
+// #############################################################################
 //
 //
 // $Copyright:
@@ -48,7 +48,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // $
-//#############################################################################
+// #############################################################################
 
 //
 // Included Files
@@ -56,102 +56,31 @@
 #include "driverlib.h"
 #include "device.h"
 #include "board.h"
-
+#include "c2000ware_libraries.h"
 #include "stdio.h"
+
+
+#include "drv_oled.h"
 //
 // Globals
 //
-EPWM_SignalParams pwmSignal =
-            {100000, 0.5f, 0.5f, true, DEVICE_SYSCLK_FREQ,
-            EPWM_COUNTER_MODE_UP_DOWN, EPWM_CLOCK_DIVIDER_1,
-            EPWM_HSCLOCK_DIVIDER_1};
 
-uint32_t isr_counter=0;
+uint32_t isr_counter = 0;
 uint16_t counter = 0;
+uint8_t time_flag = 0;
 unsigned char *msg;
-#define RESULTS_BUFFER_SIZE     256
 
-//
-// Globals
-//
-uint16_t myADC0Results[RESULTS_BUFFER_SIZE];   // Buffer for results
-uint16_t index;                              // Index into result buffer
-volatile uint16_t bufferFull;                // Flag to indicate buffer is full
+volatile float32_t Vin_temp = 0.0;
+volatile float32_t I_in_temp = 0.0;
+volatile float32_t I_L_temp = 0.0;
 
-void ADC0_Init()
-{
-    //
-        // ADC Initialization: Write ADC configurations and power up the ADC
-        //
-        // Configures the ADC module's offset trim
-        //
-        ADC_setOffsetTrimAll(ADC_REFERENCE_INTERNAL,ADC_REFERENCE_3_3V);
-        //
-        // Configures the analog-to-digital converter module prescaler.
-        //
-        ADC_setPrescaler(myADC0_BASE, ADC_CLK_DIV_2_0);
-        //
-        // Sets the timing of the end-of-conversion pulse
-        //
-        ADC_setInterruptPulseMode(myADC0_BASE, ADC_PULSE_END_OF_CONV);
-        //
-        // Powers up the analog-to-digital converter core.
-        //
-        ADC_enableConverter(myADC0_BASE);
-        //
-        // Delay for 1ms to allow ADC time to power up
-        //
-        DEVICE_DELAY_US(5000);
-        //
-        // SOC Configuration: Setup ADC EPWM channel and trigger settings
-        //
-        // Disables SOC burst mode.
-        //
-        ADC_disableBurstMode(myADC0_BASE);
-        //
-        // Sets the priority mode of the SOCs.
-        //
-        ADC_setSOCPriority(myADC0_BASE, ADC_PRI_ALL_ROUND_ROBIN);
-        //
-        // Start of Conversion 0 Configuration
-        //
-        //
-        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
-        //      SOC number      : 0
-        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
-        //      Channel         : ADC_CH_ADCIN0
-        //      Sample Window   : 8 SYSCLK cycles
-        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
-        //
-        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0, 8U);
-        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
-        //
-        // Start of Conversion 1 Configuration
-        //
-        //
-        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
-        //      SOC number      : 1
-        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
-        //      Channel         : ADC_CH_ADCIN2
-        //      Sample Window   : 8 SYSCLK cycles
-        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
-        //
-        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2, 8U);
-        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER1, ADC_INT_SOC_TRIGGER_NONE);
-        //
-        // Start of Conversion 2 Configuration
-        //
-        //
-        // Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
-        //      SOC number      : 2
-        //      Trigger         : ADC_TRIGGER_EPWM1_SOCA
-        //      Channel         : ADC_CH_ADCIN6
-        //      Sample Window   : 8 SYSCLK cycles
-        //      Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
-        //
-        ADC_setupSOC(myADC0_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6, 8U);
-        ADC_setInterruptSOCTrigger(myADC0_BASE, ADC_SOC_NUMBER2, ADC_INT_SOC_TRIGGER_NONE);
-}
+volatile float32_t Vout_temp = 0.0;
+volatile float32_t I_out_temp = 0.0;
+
+uint16_t compBValue = 0;
+uint32_t LOOP_counter = 0;
+
+volatile float32_t vtarget = 5.0;
 //
 // Main
 //
@@ -161,10 +90,7 @@ void main(void)
     // Initializes system control, device clock, and peripherals
     //
     Device_init();
-    //
-    // Disable pin locks and enable internal pull ups.
-    //
-//    Device_initGPIO();
+
     //
     // Initializes PIE and clear PIE registers. Disables CPU interrupts.
     // and clear all CPU interrupt flags.
@@ -177,119 +103,100 @@ void main(void)
     //
     Interrupt_initVectorTable();
 
+    //
+    // Disable sync(Freeze clock to PWM as well)
+    //
+    SysCtl_disablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
+    Board_init();
+    C2000Ware_libraries_init();
+    //
+    // Enable sync and clock to PWM
+    //
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
 
+    //
+    // Enable ePWM interrupts
+    //
+    Interrupt_enable(INT_EPWM1);
 
-        //
-        // Disable sync(Freeze clock to PWM as well)
-        //
-        SysCtl_disablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
+    msg = "\r\n--F280048C-Digital Power--\n\0";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t *)msg, 31);
+    msg = "\r\nyou can send 2 characters to set voltage,such as :“51” ->set:5.1V\n\0";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t *)msg, 74);
+    SCI_setFIFOInterruptLevel(SCIA_BASE, SCI_FIFO_TX0, SCI_FIFO_RX2);
+    SCI_enableInterrupt(SCIA_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
 
-
-        Board_init();
-
-
-//        ADC_setOffsetTrimAll(ADC_REFERENCE_INTERNAL,ADC_REFERENCE_3_3V);
-//        ADC0_Init();
-//        EPWM_configureSignal(myEPWM0_BASE, &pwmSignal);
-
-        //
-        // Enable sync and clock to PWM
-        //
-        SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
-
-        //
-        // Enable ePWM interrupts
-        //
-        Interrupt_enable(INT_EPWM1);
-
-        //
-        // Initialize results buffer
-        //
-        for(index = 0; index < RESULTS_BUFFER_SIZE; index++)
-        {
-            myADC0Results[index] = 0;
-        }
-
-        index = 0;
-        bufferFull = 0;
-        //
-        // Send starting message.
-        //
-        msg = "\r\n\n\nHello World!\0";
-        SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 17);
-        msg = "\r\nYou will enter a character, and the DSP will echo it back!\n\0";
-        SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 62);
-
-//        SCI_setFIFOInterruptLevel(SCIA_BASE, SCI_FIFO_TX0, SCI_FIFO_RX2);
-        SCI_enableInterrupt(SCIA_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
-        //
-        // Clear the SCI interrupts before enabling them.
-        //
-//        SCI_clearInterruptStatus(SCIA_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
-//
-//        //
-//        // Enable the interrupts in the PIE: Group 9 interrupts 1 & 2.
-//        //
-//        Interrupt_enable(INT_SCIA_RX);
-//        Interrupt_enable(INT_SCIA_TX);
-        Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
+    //         Clear the SCI interrupts before enabling them.
+    SCI_clearInterruptStatus(SCIA_BASE, SCI_INT_TXFF | SCI_INT_RXFF);
+    //
+    // Enable the interrupts in the PIE: Group 9 interrupts 1 & 2.
+    //
+    Interrupt_enable(INT_SCIA_RX);
+    Interrupt_enable(INT_SCIA_TX);
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP9);
     //
     // Enable Global Interrupt (INTM) and realtime interrupt (DBGM)
     //
     EINT;
     ERTM;
-    //
-    // Loop.
-    //
-    uint16_t compAValue=10;
-    char send_ad_buff[20];
-    uint16_t ai;
-    for(ai=0;ai<9;ai++)
-    {
-//        printf(send_ad_buff,"adc %d: = %d\n",ai,myADC0Results[ai]);
-//        SCI_writeCharArray(SCIA_BASE, (uint16_t*)send_ad_buff, 12);
-    }
-    for(;;)
-    {
-//        GPIO_togglePin(23);
-        DEVICE_DELAY_US(500000);
-        GPIO_togglePin(34);
-//        EPWM_setCounterCompareValue(myEPWM0_BASE,EPWM_COUNTER_COMPARE_A,compAValue);
-        if(compAValue<240)
-            compAValue+=10;
-        else
-            compAValue=0;
 
-        myADC0Results[0] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
-        myADC0Results[1] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
-        myADC0Results[2] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
-        printf("myADC0Results[0]=%d\n",myADC0Results[0]);
-        printf("myADC0Results[1]=%d\n",myADC0Results[1]);
-        printf("myADC0Results[2]=%d\n",myADC0Results[2]);
-//        if(index<70)
-//        {
-//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
-//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
-//            myADC0Results[index++] = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
-//        }
-//        else
-//            index=0;
+    Oled_Init();
+    OLED_DISPLAY_INT();
+    GPIO_writePin(30, 1);
+    GPIO_writePin(58, 1);
+    uint16_t Vin_temp22 = 0.0;
+    uint16_t Vout_temp22 = 0.0;
+    msg = "\r\n\n\nHello World!\0";
+    SCI_writeCharArray(SCIA_BASE, (uint16_t *)msg, 17);
+    for (;;)
+    {
+        if (time_flag)
+        {
+            time_flag = 0;
+            GPIO_togglePin(34);
+            GPIO_togglePin(58);
+            LOOP_counter++;
+        }
+        Vin_temp22 = (uint16_t)(Vin_temp * 10);
+        Vout_temp22 = (uint16_t)(Vout_temp * 10);
+        OLED_ShowNum(50, 0, Vin_temp22 / 10, 2, 16);
+        OLED_ShowNum(74, 0, Vin_temp22 % 10, 1, 16);
+        OLED_ShowNum(50, 2, Vout_temp22 / 10, 2, 16);
+        OLED_ShowNum(74, 2, Vout_temp22 % 10, 1, 16);
+        DEVICE_DELAY_US(100000);
     }
 }
+uint16_t Sample_Temp;
 //
 // epwm1ISR - ePWM 1 ISR
 //
+#pragma CODE_SECTION(INT_myEPWM0_ISR, "ramfuncs");
 __interrupt void INT_myEPWM0_ISR(void)
 {
 
     isr_counter++;
-    if(isr_counter==200000)
+    if (isr_counter == 2000)
     {
         GPIO_togglePin(23);
-        isr_counter=0;
+        isr_counter = 0;
+        time_flag = 1;
     }
+    Sample_Temp = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
+    I_L_temp = (Sample_Temp * 3300.0 / 4096) * 0.00757575f;
+    Sample_Temp = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER1);
+    Vin_temp = (Sample_Temp * 3300.0 / 4096) * 0.011f;
+    Sample_Temp = ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER2);
+    I_in_temp = (Sample_Temp * 3300.0 / 4096) * 0.00757575f - 12.49998f;
 
-//    EPWM_setCounterCompareValue(myEPWM0_BASE,EPWM_COUNTER_COMPARE_A,isr_counter%250);
+    Sample_Temp = ADC_readResult(ADCBRESULT_BASE, ADC_SOC_NUMBER0);
+    Vout_temp = (Sample_Temp * 3300.0 / 4096) * 0.011f;
+
+    Sample_Temp = ADC_readResult(ADCBRESULT_BASE, ADC_SOC_NUMBER1);
+    I_out_temp = (Sample_Temp * 3300.0 / 4096) * 0.00757575f - 12.49998f;
+
+    compBValue = (uint16_t)DCL_runPI_C1(&myCONTROLLER0, vtarget, Vout_temp);
+
+    EPWM_setCounterCompareValue(myEPWM0_BASE, EPWM_COUNTER_COMPARE_A, compBValue);
     //
     // Clear INT flag for this timer
     //
@@ -311,8 +218,8 @@ __interrupt void INT_mySCI0_TX_ISR(void)
     //
     SCI_disableInterrupt(SCIA_BASE, SCI_INT_TXFF);
 
-    msg = "\r\nEnter two characters: \0";
-    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 26);
+    //    msg = "\r\nEnter two characters: \0";
+    //    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 26);
 
     //
     // Acknowledge the PIE interrupt.
@@ -342,10 +249,10 @@ __interrupt void INT_mySCI0_RX_ISR(void)
     // Echo back the two characters.
     //
     msg = "  You sent: \0";
-    SCI_writeCharArray(SCIA_BASE, (uint16_t*)msg, 13);
+    SCI_writeCharArray(SCIA_BASE, (uint16_t *)msg, 13);
     SCI_writeCharBlockingFIFO(SCIA_BASE, receivedChar1);
     SCI_writeCharBlockingFIFO(SCIA_BASE, receivedChar2);
-
+    vtarget = (receivedChar1 - '0') + (receivedChar2 - '0') / 10.0;
     //
     // Clear the SCI RXFF interrupt and acknowledge the PIE interrupt.
     //
@@ -354,41 +261,3 @@ __interrupt void INT_mySCI0_RX_ISR(void)
 
     counter++;
 }
-
-//int fputc(int _c, register FILE *_fp)
-//{
-//        while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
-//                HWREGH(mySCI0_BASE + SCI_O_TXBUF) = _c;
-//        return _c;
-//}
-//
-//int putc(int _c, register FILE *_fp)
-//{
-//    while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
-//            HWREGH(mySCI0_BASE + SCI_O_TXBUF) = _c;
-//    return _c;
-//}
-//
-//int putchar(int data)
-//{
-//  while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
-//  HWREGH(mySCI0_BASE + SCI_O_TXBUF) =data;
-//  return data;
-//}
-//
-//int fputs(const char *_ptr, register FILE *_fp)
-//{
-//    unsigned int i, len;
-//    len = strlen(_ptr);
-//    for(i=0 ; i<len ; i++)
-//    {
-//        while (SCI_getTxFIFOStatus(mySCI0_BASE) == SCI_FIFO_TX16);
-//        HWREGH(mySCI0_BASE + SCI_O_TXBUF) = (uint8_t) _ptr[i];
-//    }
-//    return len;
-//}
-
-//
-// End of File
-//
-

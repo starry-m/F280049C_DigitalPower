@@ -1,4 +1,10 @@
-#ifdef generic_ram_lnk
+
+//
+// Active linker CMD configuration selected by 
+// the CMD Tool global settings
+//
+#define CMD0
+#ifdef CMD0
 
 MEMORY
 {
@@ -9,7 +15,8 @@ MEMORY
     CLATOCPU_MSGRAM           : origin = 0x001480, length = 0x000080
     CPUTOCLA_MSGRAM           : origin = 0x001500, length = 0x000080
     RAMLS0                    : origin = 0x008000, length = 0x000800
-    RAMLS_1_AND_2             : origin = 0x008800, length = 0x001000
+    RAMLS1                    : origin = 0x008800, length = 0x000800
+    RAMLS2                    : origin = 0x009000, length = 0x000800
     RAMLS3                    : origin = 0x009800, length = 0x000800
     RAMLS4                    : origin = 0x00A000, length = 0x000800
     RAMLS5                    : origin = 0x00A800, length = 0x000800
@@ -62,21 +69,23 @@ SECTIONS
     //
     .reset               : >  RESET, TYPE = DSECT /* not used, */
     codestart            : >  0x000000
-    .text                : >> RAMGS0 | RAMLS4 | RAMLS5 | RAMLS6 | RAMLS7
+    .text                : >> RAMGS3 | RAMLS0 | RAMLS1 | RAMLS2 | RAMLS3 | RAMLS4
     .TI.ramfunc          : >  RAMM0
+    .binit               : >  FLASH_BANK0_SEC1,
+                              ALIGN(8)
     .cinit               : >  RAMM0
     .stack               : >  RAMM1
     .init_array          : >  RAMM0
-    .bss                 : >> RAMLS4 | RAMLS_1_AND_2
-    .const               : >  RAMLS4
-    .data                : >> RAMLS4 | RAMLS_1_AND_2
+    .bss                 : >> RAMGS1 | RAMGS2
+    .const               : >> RAMGS0 | RAMGS1
+    .data                : >  RAMLS7
     .switch              : >  RAMM0
-    .sysmem              : >> RAMLS4 | RAMLS_1_AND_2
+    .sysmem              : >  RAMLS5
 
 }
 
 #endif
-#ifdef generic_flash_lnk
+#ifdef CMD1
 
 MEMORY
 {
@@ -140,9 +149,9 @@ SECTIONS
     //
     .reset               : >  RESET, TYPE = DSECT /* not used, */
     codestart            : >  0x080000
-    .text                : >> FLASH_BANK0_SEC2 | FLASH_BANK0_SEC3 | FLASH_BANK0_SEC4,
+    .text                : >> FLASH_BANK0_SEC2 | FLASH_BANK0_SEC3 | FLASH_BANK0_SEC5,
                               ALIGN(8)
-    .TI.ramfunc          : >  FLASH_BANK0_SEC1,
+    .TI.ramfunc          : >  RAMM0,
                               ALIGN(8)
     .binit               : >  FLASH_BANK0_SEC1,
                               ALIGN(8)

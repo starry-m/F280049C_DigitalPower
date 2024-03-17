@@ -9,13 +9,30 @@ SYSCFG_SRCS += \
 ../F280049C_Demo.syscfg 
 
 ASM_SRCS += \
-D:/workTools/ti/c2000/C2000Ware_5_01_00_00/device_support/f28004x/common/source/f28004x_codestartbranch.asm 
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/device_support/f28004x/common/source/f28004x_codestartbranch.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_clamp_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF11_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF13_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF13_C2C3.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF22_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF22_C2C3.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF23_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF23_C2C3.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_futils.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C4.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C7.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PID_C1.asm \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PID_C4.asm 
 
 C_SRCS += \
 ./syscfg/board.c \
 ./syscfg/device.c \
 ./syscfg/device_cmd.c \
 ./syscfg/c2000ware_libraries.c \
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_error.c \
+../common.c \
+../drv_oled.c \
 ../main.c 
 
 GEN_CMDS += \
@@ -39,6 +56,9 @@ C_DEPS += \
 ./syscfg/device.d \
 ./syscfg/device_cmd.d \
 ./syscfg/c2000ware_libraries.d \
+./DCL_error.d \
+./common.d \
+./drv_oled.d \
 ./main.d 
 
 GEN_OPTS += \
@@ -52,10 +72,41 @@ OBJS += \
 ./syscfg/device_cmd.obj \
 ./syscfg/c2000ware_libraries.obj \
 ./f28004x_codestartbranch.obj \
+./DCL_clamp_C1.obj \
+./DCL_DF11_C1.obj \
+./DCL_DF13_C1.obj \
+./DCL_DF13_C2C3.obj \
+./DCL_DF22_C1.obj \
+./DCL_DF22_C2C3.obj \
+./DCL_DF23_C1.obj \
+./DCL_DF23_C2C3.obj \
+./DCL_error.obj \
+./DCL_futils.obj \
+./DCL_PI_C1.obj \
+./DCL_PI_C4.obj \
+./DCL_PI_C7.obj \
+./DCL_PID_C1.obj \
+./DCL_PID_C4.obj \
+./common.obj \
+./drv_oled.obj \
 ./main.obj 
 
 ASM_DEPS += \
-./f28004x_codestartbranch.d 
+./f28004x_codestartbranch.d \
+./DCL_clamp_C1.d \
+./DCL_DF11_C1.d \
+./DCL_DF13_C1.d \
+./DCL_DF13_C2C3.d \
+./DCL_DF22_C1.d \
+./DCL_DF22_C2C3.d \
+./DCL_DF23_C1.d \
+./DCL_DF23_C2C3.d \
+./DCL_futils.d \
+./DCL_PI_C1.d \
+./DCL_PI_C4.d \
+./DCL_PI_C7.d \
+./DCL_PID_C1.d \
+./DCL_PID_C4.d 
 
 GEN_MISC_FILES += \
 ./syscfg/board.h \
@@ -79,6 +130,23 @@ OBJS__QUOTED += \
 "syscfg\device_cmd.obj" \
 "syscfg\c2000ware_libraries.obj" \
 "f28004x_codestartbranch.obj" \
+"DCL_clamp_C1.obj" \
+"DCL_DF11_C1.obj" \
+"DCL_DF13_C1.obj" \
+"DCL_DF13_C2C3.obj" \
+"DCL_DF22_C1.obj" \
+"DCL_DF22_C2C3.obj" \
+"DCL_DF23_C1.obj" \
+"DCL_DF23_C2C3.obj" \
+"DCL_error.obj" \
+"DCL_futils.obj" \
+"DCL_PI_C1.obj" \
+"DCL_PI_C4.obj" \
+"DCL_PI_C7.obj" \
+"DCL_PID_C1.obj" \
+"DCL_PID_C4.obj" \
+"common.obj" \
+"drv_oled.obj" \
 "main.obj" 
 
 GEN_MISC_FILES__QUOTED += \
@@ -99,6 +167,9 @@ C_DEPS__QUOTED += \
 "syscfg\device.d" \
 "syscfg\device_cmd.d" \
 "syscfg\c2000ware_libraries.d" \
+"DCL_error.d" \
+"common.d" \
+"drv_oled.d" \
 "main.d" 
 
 GEN_FILES__QUOTED += \
@@ -112,7 +183,21 @@ GEN_FILES__QUOTED += \
 "syscfg\c2000ware_libraries.c" 
 
 ASM_DEPS__QUOTED += \
-"f28004x_codestartbranch.d" 
+"f28004x_codestartbranch.d" \
+"DCL_clamp_C1.d" \
+"DCL_DF11_C1.d" \
+"DCL_DF13_C1.d" \
+"DCL_DF13_C2C3.d" \
+"DCL_DF22_C1.d" \
+"DCL_DF22_C2C3.d" \
+"DCL_DF23_C1.d" \
+"DCL_DF23_C2C3.d" \
+"DCL_futils.d" \
+"DCL_PI_C1.d" \
+"DCL_PI_C4.d" \
+"DCL_PI_C7.d" \
+"DCL_PID_C1.d" \
+"DCL_PID_C4.d" 
 
 SYSCFG_SRCS__QUOTED += \
 "../F280049C_Demo.syscfg" 
@@ -122,9 +207,26 @@ C_SRCS__QUOTED += \
 "./syscfg/device.c" \
 "./syscfg/device_cmd.c" \
 "./syscfg/c2000ware_libraries.c" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_error.c" \
+"../common.c" \
+"../drv_oled.c" \
 "../main.c" 
 
 ASM_SRCS__QUOTED += \
-"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/device_support/f28004x/common/source/f28004x_codestartbranch.asm" 
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/device_support/f28004x/common/source/f28004x_codestartbranch.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_clamp_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF11_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF13_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF13_C2C3.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF22_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF22_C2C3.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF23_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_DF23_C2C3.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_futils.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C4.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PI_C7.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PID_C1.asm" \
+"D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/source/DCL_PID_C4.asm" 
 
 

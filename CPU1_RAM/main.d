@@ -98,8 +98,18 @@ main.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/driverlib/f28004x/driverlib
 main.obj: syscfg/device.h
 main.obj: syscfg/clocktree.h
 main.obj: syscfg/board.h
+main.obj: syscfg/c2000ware_libraries.h
+main.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCL.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/complex.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/math.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/_defs.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/machine/_limits.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h
+main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h
+main.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCLF32.h
 main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdio.h
 main.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdarg.h
+main.obj: ../drv_oled.h
 
 ../main.c:
 
@@ -297,7 +307,27 @@ syscfg/clocktree.h:
 
 syscfg/board.h:
 
+syscfg/c2000ware_libraries.h:
+
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCL.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/complex.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/math.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/_defs.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/machine/_limits.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h:
+
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCLF32.h:
+
 D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdio.h:
 
 D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdarg.h:
+
+../drv_oled.h:
 

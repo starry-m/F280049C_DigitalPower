@@ -18,3 +18,4 @@
  *                TI C/C++ toolchain
  */
 --define=CMDTOOL
+--define=CMD0

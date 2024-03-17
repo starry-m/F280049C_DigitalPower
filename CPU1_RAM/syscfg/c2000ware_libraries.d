@@ -99,6 +99,14 @@ syscfg/c2000ware_libraries.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/drive
 syscfg/c2000ware_libraries.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/driverlib/f28004x/driverlib/driver_inclusive_terminology_mapping.h
 syscfg/c2000ware_libraries.obj: syscfg/device.h
 syscfg/c2000ware_libraries.obj: syscfg/clocktree.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCL.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/complex.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/math.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/_defs.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/machine/_limits.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h
+syscfg/c2000ware_libraries.obj: D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCLF32.h
 
 syscfg/c2000ware_libraries.c:
 
@@ -297,4 +305,20 @@ D:/workTools/ti/c2000/C2000Ware_5_01_00_00/driverlib/f28004x/driverlib/driver_in
 syscfg/device.h:
 
 syscfg/clocktree.h:
+
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCL.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/complex.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/math.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/_defs.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/machine/_limits.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h:
+
+D:/workTools/ti/ccs1260/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h:
+
+D:/workTools/ti/c2000/C2000Ware_5_01_00_00/libraries/control/DCL/c28/include/DCLF32.h:
 

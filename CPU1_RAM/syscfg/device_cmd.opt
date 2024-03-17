@@ -18,3 +18,4 @@
  *                TI C/C++ toolchain
  */
 -DCMDTOOL
+-DCMD0

@@ -15,6 +15,23 @@ ORDERED_OBJS += \
 "./syscfg/device_cmd.obj" \
 "./syscfg/c2000ware_libraries.obj" \
 "./f28004x_codestartbranch.obj" \
+"./DCL_clamp_C1.obj" \
+"./DCL_DF11_C1.obj" \
+"./DCL_DF13_C1.obj" \
+"./DCL_DF13_C2C3.obj" \
+"./DCL_DF22_C1.obj" \
+"./DCL_DF22_C2C3.obj" \
+"./DCL_DF23_C1.obj" \
+"./DCL_DF23_C2C3.obj" \
+"./DCL_error.obj" \
+"./DCL_futils.obj" \
+"./DCL_PI_C1.obj" \
+"./DCL_PI_C4.obj" \
+"./DCL_PI_C7.obj" \
+"./DCL_PID_C1.obj" \
+"./DCL_PID_C4.obj" \
+"./common.obj" \
+"./drv_oled.obj" \
 "./main.obj" \
 $(GEN_CMDS__FLAG) \
 -lc2000ware_libraries.cmd.genlibs \
@@ -149,9 +166,9 @@ F280049C_Demo.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "syscfg\board.obj" "syscfg\device.obj" "syscfg\device_cmd.obj" "syscfg\c2000ware_libraries.obj" "f28004x_codestartbranch.obj" "main.obj" 
-	-$(RM) "syscfg\board.d" "syscfg\device.d" "syscfg\device_cmd.d" "syscfg\c2000ware_libraries.d" "main.d" 
-	-$(RM) "f28004x_codestartbranch.d" 
+	-$(RM) "syscfg\board.obj" "syscfg\device.obj" "syscfg\device_cmd.obj" "syscfg\c2000ware_libraries.obj" "f28004x_codestartbranch.obj" "DCL_clamp_C1.obj" "DCL_DF11_C1.obj" "DCL_DF13_C1.obj" "DCL_DF13_C2C3.obj" "DCL_DF22_C1.obj" "DCL_DF22_C2C3.obj" "DCL_DF23_C1.obj" "DCL_DF23_C2C3.obj" "DCL_error.obj" "DCL_futils.obj" "DCL_PI_C1.obj" "DCL_PI_C4.obj" "DCL_PI_C7.obj" "DCL_PID_C1.obj" "DCL_PID_C4.obj" "common.obj" "drv_oled.obj" "main.obj" 
+	-$(RM) "syscfg\board.d" "syscfg\device.d" "syscfg\device_cmd.d" "syscfg\c2000ware_libraries.d" "DCL_error.d" "common.d" "drv_oled.d" "main.d" 
+	-$(RM) "f28004x_codestartbranch.d" "DCL_clamp_C1.d" "DCL_DF11_C1.d" "DCL_DF13_C1.d" "DCL_DF13_C2C3.d" "DCL_DF22_C1.d" "DCL_DF22_C2C3.d" "DCL_DF23_C1.d" "DCL_DF23_C2C3.d" "DCL_futils.d" "DCL_PI_C1.d" "DCL_PI_C4.d" "DCL_PI_C7.d" "DCL_PID_C1.d" "DCL_PID_C4.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'
 	-@echo ' '
